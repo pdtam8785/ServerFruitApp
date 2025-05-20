@@ -131,6 +131,51 @@ const getOrderItems = async (req, res) => {
            });
        }
    };
-   
+   const deleteOrderItem = async (req, res) => {
+    try {
+        const { orderitem_id } = req.params;
+
+        // Kiểm tra orderItem_id có được cung cấp không
+        if (!orderitem_id) {
+            return res.status(400).json({
+                success: false,
+                message: "Vui lòng cung cấp orderItem_id"
+            });
+        }
+
+        // Kiểm tra ObjectId hợp lệ
+        if (!mongoose.Types.ObjectId.isValid(orderitem_id)) {
+            return res.status(400).json({
+                success: false,
+                message: "orderItem_id không hợp lệ"
+            });
+        }
+
+        // Tìm và xóa OrderItem
+        const deletedItem = await OrderItemModels.findByIdAndDelete(orderitem_id);
+
+        if (!deletedItem) {
+            return res.status(404).json({
+                success: false,
+                message: "Không tìm thấy OrderItem để xóa"
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: "Xóa OrderItem thành công",
+            data: deletedItem
+        });
+
+    } catch (error) {
+        console.error("Lỗi trong deleteOrderItem:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Lỗi server: " + error.message
+        });
+    }
+};
+
+ 
    // Export các hàm để sử dụng trong route
-   module.exports = { addOrderItem, getOrderItems };
+   module.exports = { addOrderItem, getOrderItems,deleteOrderItem };

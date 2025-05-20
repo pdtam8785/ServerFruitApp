@@ -69,6 +69,10 @@ const userSchema = new mongoose.Schema(
     phone_number: { type: String, required: true },
     created_at: { type: Date, required: true, default: Date.now },
     token: { type: String, required: false },
+    delivery_address: {
+      type: String,
+      required: true,
+    },
     resetCode: { type: String, required: false },
     resetCodeExpiry: { type: Date, required: false },
     isVerified: { type: Boolean, required: true, default: false },

@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif; }
+        body { background: #f0f2f5; line-height: 1.6; }
+        .container { display: flex; min-height: 100vh; }
+
+        /* Navbar */
+        .navbar {
+            width: 250px;
+            background: linear-gradient(135deg, #F08626, #e07b1a);
+            color: white;
+            padding: 20px 0;
+            position: fixed;
+            height: 100vh;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .navbar-toggle {
+            display: none;
+            font-size: 24px;
+            padding: 10px;
+            background: #F08626;
+            color: white;
+            border: none;
+            cursor: pointer;
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            z-index: 1000;
+        }
+
+        .navbar ul { list-style: none; }
+        .navbar ul li { padding: 0; margin: 10px 0; }
+        .navbar ul li a {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            color: white;
+            text-decoration: none;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .navbar ul li a:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: #ffd700;
+        }
+        .navbar ul li a i {
+            margin-right: 15px;
+            font-size: 18px;
+            transition: color 0.3s ease;
+        }
+        .navbar ul li.active a i {
+            background: linear-gradient(45deg, #FFD700, #FFFFFF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .navbar ul li:not(.active) a:hover i { color: #ffd700; }
+        .navbar ul li a span { font-size: 16px; font-weight: 500; }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 250px;
+            padding: 30px;
+            flex-grow: 1;
+            transition: margin-left 0.3s ease;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #ffffff, #f9f9f9);
+            padding: 20px 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header h1 {
+            font-size: 28px;
+            color: #F08626;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        /* Product Table */
+        .product-table {
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        .product-table:hover { transform: translateY(-2px); }
+
+        .add-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+            padding: 12px 20px;
+            background: #28a745;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+        .add-button i { font-size: 14px; }
+        .add-button:hover {
+            background: #218838;
+            transform: translateY(-2px);
+        }
+
+        /* Table Styles */
+        .product-table table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 15px;
+        }
+        .product-table th, .product-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e5e5e5;
+        }
+        .product-table th {
+            background: #F08626;
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 14px;
+        }
+        .product-table td { color: #333; }
+        .product-table tr {
+            transition: background 0.2s ease;
+        }
+        .product-table tr:hover { background: #f9f9f9; }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        .action-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: background 0.3s ease, transform 0.1s ease;
+        }
+        .action-btn i { font-size: 16px; }
+        .view-btn { background: #007bff; color: white; }
+        .view-btn:hover { background: #0056b3; transform: translateY(-2px); }
+        .edit-btn { background: #ffc107; color: white; }
+        .edit-btn:hover { background: #e0a800; transform: translateY(-2px); }
+        .delete-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .delete-btn:hover { background: #c82333; transform: translateY(-2px); }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .navbar-toggle { display: block; }
+            .navbar {
+                transform: translateX(-250px);
+                z-index: 999;
+            }
+            .navbar.active { transform: translateX(0); }
+            .main-content {
+                margin-left: 0;
+                padding: 15px;
+            }
+            .header {
+                padding: 15px 20px;
+                flex-direction: column;
+                text-align: center;
+            }
+            .header h1 { font-size: 24px; }
+            .product-table {
+                padding: 15px;
+                border-radius: 8px;
+            }
+            .product-table table {
+                font-size: 14px;
+            }
+            .product-table th, .product-table td {
+                padding: 10px;
+            }
+            .action-btn {
+                width: 32px;
+                height: 32px;
+            }
+            .action-btn i { font-size: 14px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Navbar Toggle Button for Mobile -->
+        <button class="navbar-toggle" onclick="toggleNavbar()">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <!-- Sidebar (Navbar) -->
+        <nav class="navbar">
+            <ul>
+                <li><a href="/home"><i class="fas fa-home"></i> <span>Trang chủ</span></a></li>
+                <li class="active"><a href="/orders"><i class="fas fa-shopping-cart"></i> <span>Quản lý Đơn hàng</span></a></li>
+                <li><a href="/getProducts"><i class="fas fa-box"></i> <span>Quản lý Sản phẩm</span></a></li>
+                <li><a href="/getUsers"><i class="fas fa-users"></i> <span>Quản lý Người dùng</span></a></li>
+                <li><a href="/reports"><i class="fas fa-chart-bar"></i> <span>Thống kê</span></a></li>
+                <li><a href="/logout"><i class="fas fa-sign-out-alt"></i> <span>Đăng xuất ({{user.email}})</span></a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <h1>Quản lý Sản phẩm</h1>
+            </div>
+            <div class="product-table">
+                <a href="/addProduct" class="add-button"><i class="fas fa-plus"></i> Thêm sản phẩm mới</a>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tên sản phẩm</th>
+                            <th>Giá</th>
+                            <th>Danh mục</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each products}}
+                            <tr>
+                                <td>{{name}}</td>
+                                <td>{{formatCurrency price}}</td>
+                                <td>{{#if category_id}}{{category_id.category_name}}{{else}}Không có danh mục{{/if}}</td>
+                                <td class="action-buttons">
+                                    <a href="/getProductDetail/{{_id}}" class="action-btn view-btn" title="Xem chi tiết"><i class="fas fa-eye"></i></a>
+                                    <a href="/editProduct/{{_id}}" class="action-btn edit-btn" title="Chỉnh sửa"><i class="fas fa-edit"></i></a>
+                                    <form action="/deleteProduct/{{_id}}?_method=POST" method="POST" style="display:inline;">
+                                        <button type="submit" class="action-btn delete-btn" title="Xóa sản phẩm"><i class="fas fa-trash-alt"></i></button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Toggle Navbar on Mobile
+        function toggleNavbar() {
+            const navbar = document.querySelector('.navbar');
+            navbar.classList.toggle('active');
+        }
+
+        // Add class 'active' dynamically on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            const menuItems = document.querySelectorAll('.navbar ul li');
+            const currentPath = window.location.pathname;
+
+            menuItems.forEach(item => {
+                const link = item.querySelector('a');
+                if (link && (link.getAttribute('href') === currentPath || (currentPath.includes('/products') && link.getAttribute('href') === '/getProducts'))) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

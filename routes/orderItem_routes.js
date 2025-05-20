@@ -5,5 +5,5 @@ const OrderItemControl = require("../controller/orderItem_controller");
 router.post('/addOrderItem', OrderItemControl.addOrderItem);
 //router.post('/addProduct', upload.fields([{ name: 'image_url' }]), ProductControl.addProduct);
  router.get('/getOrderItems/:user_id',OrderItemControl.getOrderItems);
-// router.post("/addUser", apiCtrl.addUser)
+ router.delete('/deleteOrderItems/:orderitem_id',OrderItemControl.deleteOrderItem);
 module.exports = router;

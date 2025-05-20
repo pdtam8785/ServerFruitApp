@@ -1,0 +1,10 @@
+var express = require("express");
+var router = express.Router();
+const upload = require("../upload");
+const OrderControl = require("../controller/order_controller");
+router.post('/addOrder', OrderControl.addOrder);
+router.get('/users/:user_id', OrderControl.getUserInfo);
+// //router.post('/addProduct', upload.fields([{ name: 'image_url' }]), ProductControl.addProduct);
+  router.put('/updateUserInfo/:user_id',OrderControl.updateUserInfo);
+ router.get('/getOrders/:user_id',OrderControl.getOrders);
+module.exports = router;

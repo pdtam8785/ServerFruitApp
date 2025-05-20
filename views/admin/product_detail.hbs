@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+        body { background: #f0f0f0; }
+        .container { display: flex; min-height: 100vh; }
+        .navbar { width: 250px; background: #F08626; color: white; padding: 20px 0; position: fixed; height: 100vh; box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); }
+        .navbar ul { list-style: none; }
+        .navbar ul li { padding: 0; margin: 10px 0; }
+        .navbar ul li a { display: flex; align-items: center; padding: 15px 20px; color: white; text-decoration: none; transition: background 0.3s; }
+        .navbar ul li a:hover { background: #ffffff33; }
+        .navbar ul li a i { margin-right: 10px; font-size: 18px; color: #ffffff; transition: color 0.3s ease; }
+        .navbar ul li.active a i { background: linear-gradient(45deg, #FFD700, #FFFFFF); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .navbar ul li:not(.active) a:hover i { color: #ccc; }
+        .navbar ul li a span { font-size: 16px; }
+        .main-content { margin-left: 250px; padding: 20px; flex-grow: 1; }
+        .header { background: white; padding: 10px 20px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); margin-bottom: 20px; }
+        .header h1 { font-size: 24px; color: #F08626; }
+        .detail-section { background: white; padding: 20px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); }
+        .detail-section p { margin: 10px 0; }
+        .detail-section img { max-width: 200px; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar (Navbar) -->
+        <nav class="navbar">
+            <ul>
+                <li><a href="/home"><i class="fas fa-home"></i> <span>Trang chủ</span></a></li>
+                <li class="active"><a href="/orders"><i class="fas fa-shopping-cart"></i> <span>Quản lý Đơn hàng</span></a></li>
+                <li><a href="/getProducts"><i class="fas fa-box"></i> <span>Quản lý Sản phẩm</span></a></li>
+                <li><a href="/getUsers"><i class="fas fa-users"></i> <span>Quản lý Người dùng</span></a></li>
+                <li><a href="/reports"><i class="fas fa-chart-bar"></i> <span>Thống kê</span></a></li>
+                <li><a href="/logout"><i class="fas fa-sign-out-alt"></i> <span>Đăng xuất ({{user.email}})</span></a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <h1>Chi tiết Sản phẩm</h1>
+            </div>
+            <div class="detail-section">
+                <p><strong>Tên sản phẩm:</strong> {{product.name}}</p>
+                <p><strong>Giá:</strong> {{formatCurrency product.price}}</p>
+                <p><strong>Danh mục:</strong> {{product.category_id.category_name}}</p>
+                <p><strong>Mô tả:</strong> {{product.description}}</p>
+                <p><strong>Ngày tạo:</strong> {{formatDate product.created_at}}</p>
+                <p><strong>Hình ảnh:</strong></p>
+                <img src="{{product.image}}" alt="{{product.name}}" />
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const menuItems = document.querySelectorAll('.navbar ul li');
+            const currentPath = window.location.pathname;
+            let isActiveSet = false;
+
+            menuItems.forEach(item => {
+                const link = item.querySelector('a');
+                if (link && (link.getAttribute('href') === currentPath || (currentPath.includes('/products') && link.getAttribute('href') === '/getProducts'))) {
+                    item.classList.add('active');
+                    isActiveSet = true;
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+
+            if (!isActiveSet && menuItems.length > 0) {
+                menuItems[0].classList.add('active');
+            }
+        });
+
+        // Helper function để kiểm tra active (sử dụng trong Handlebars)
+        Handlebars.registerHelper('isActive', function(path, options) {
+            return currentPath === path ? 'active' : '';
+        });
+    </script>
+</body>
+</html>
